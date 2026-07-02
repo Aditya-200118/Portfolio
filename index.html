@@ -3,20 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <meta
+        name="description"
+        content="Aditya Bhargava's portfolio, designed as a blue-gray, Lego-inspired build system for ML, optimization, and experimentation work."
+    >
+    <meta name="theme-color" content="#0a1424">
+    <title>Aditya Bhargava | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Portfolio</h1>
-    </header>
-    <section>
-        <h2>About Me</h2>
-        <p>Hi! I am Aditya Bhargava from India. I completed by Bachelor of Technology in Computer Science and Engineering.</p>
-    </section>
-    <section>
-        <h2>Projects</h2>
-        <p>To be Updated Soon</p>
-    </section>
+    <div class="backdrop backdrop-a" aria-hidden="true"></div>
+    <div class="backdrop backdrop-b" aria-hidden="true"></div>
+
+    <div class="page" id="top">
+        <header class="topbar">
+            <a class="brand" href="#top">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <span class="brand-copy">
+                    <strong>Aditya Bhargava</strong>
+                    <span>ML systems, optimization, and experimentation</span>
+                </span>
+            </a>
+
+            <nav class="nav" aria-label="Primary">
+                <a href="#work">Work</a>
+                <a href="#approach">Approach</a>
+                <a href="#stack">Stack</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Blue-gray portfolio / Lego-inspired build system</p>
+                    <h1>
+                        <span>Modern software built</span>
+                        <span>from modular pieces that still feel like one story.</span>
+                    </h1>
+                    <p class="lede">
+                        I am Aditya Bhargava, a Computer Science master's student at the University of Georgia.
+                        I work on optimization, efficient training, and practical ML systems, with projects that
+                        span zeroth-order fine-tuning, edge-cloud inference, quantization, and reproducible
+                        experiment pipelines.
+                    </p>
+
+                    <div class="cta-row">
+                        <a class="button button-primary" href="mailto:adityabhargava2001@gmail.com">Email me</a>
+                        <a
+                            class="button button-secondary"
+                            href="https://aditya-200118.github.io/portfolio"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Live site
+                        </a>
+                        <a
+                            class="button button-secondary"
+                            href="https://github.com/aditya-200118"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            GitHub profile
+                        </a>
+                        <a class="button button-secondary" href="#work">See selected work</a>
+                    </div>
+
+                    <div class="signal-grid">
+                        <article class="signal-card">
+                            <span class="signal-kicker">Focus</span>
+                            <p>Research code that stays readable after the first experiment is over.</p>
+                        </article>
+                        <article class="signal-card">
+                            <span class="signal-kicker">Style</span>
+                            <p>Blue and slate tones, clean grids, and a modular layout that behaves like stacked blocks.</p>
+                        </article>
+                        <article class="signal-card">
+                            <span class="signal-kicker">Workflow</span>
+                            <p>Reproducible runs, clear metrics, and structured artifacts that make reruns simple.</p>
+                        </article>
+                    </div>
+                </div>
+
+                <aside class="hero-aside">
+                    <div class="brick-card brick-card-large">
+                        <p class="card-kicker">Current build plate</p>
+                        <div class="brick-stack" aria-hidden="true">
+                            <div class="brick brick-a">
+                                <span>Zero-order optimization</span>
+                                <small>Fine-tuning without backprop</small>
+                            </div>
+                            <div class="brick brick-b">
+                                <span>System design</span>
+                                <small>SLURM, Optuna, structured reruns</small>
+                            </div>
+                            <div class="brick brick-c">
+                                <span>Deployment</span>
+                                <small>Quantization, edge-cloud, forecasting</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fact-card">
+                        <p class="card-kicker">What I keep building</p>
+                        <ul class="fact-list">
+                            <li>
+                                <span>Research</span>
+                                <strong>Zeroth-order optimizers for transformer and vision fine-tuning</strong>
+                            </li>
+                            <li>
+                                <span>Industry</span>
+                                <strong>5G traffic prediction and forecasting pipelines</strong>
+                            </li>
+                            <li>
+                                <span>Delivery</span>
+                                <strong>Readable code, tighter feedback loops, and durable experiments</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </section>
+
+            <section class="section" id="work">
+                <div class="section-heading">
+                    <p class="section-index">01</p>
+                    <div>
+                        <h2>Selected work</h2>
+                        <p>
+                            Projects that show the kind of builder I am: systems-minded, metric-driven,
+                            and happiest when the pieces fit cleanly together.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="work-grid">
+                    <article class="project-card">
+                        <p class="project-type">Research</p>
+                        <h3>Zeroth-order fine-tuning</h3>
+                        <p>
+                            Built benchmarking and training infrastructure for RoBERTa-large and OPT-family
+                            models, with an emphasis on memory efficiency, stability, query efficiency, and
+                            reproducible sweeps.
+                        </p>
+                        <ul class="project-points">
+                            <li>Benchmarked fine-tuning without backpropagation.</li>
+                            <li>Built resumable studies with guard rails and structured artifacts.</li>
+                            <li>Compared trade-offs across transformer families.</li>
+                        </ul>
+                        <ul class="tag-list">
+                            <li>PyTorch</li>
+                            <li>Transformers</li>
+                            <li>SLURM</li>
+                            <li>Optuna</li>
+                        </ul>
+                    </article>
+
+                    <article class="project-card">
+                        <p class="project-type">Systems</p>
+                        <h3>Edge-cloud collaborative inference</h3>
+                        <p>
+                            Implemented a SPINN-inspired pipeline with early exits, split-point profiling, and
+                            offloading analysis on Jetson Orin Nano and cloud GPUs.
+                        </p>
+                        <ul class="project-points">
+                            <li>Added early-exit branches and confidence-aware routing.</li>
+                            <li>Profiled latency, energy, and feature-map sizes.</li>
+                            <li>Kept the implementation close to the research shape.</li>
+                        </ul>
+                        <ul class="tag-list">
+                            <li>PyTorch</li>
+                            <li>Jetson</li>
+                            <li>Profiling</li>
+                            <li>Edge compute</li>
+                        </ul>
+                    </article>
+
+                    <article class="project-card">
+                        <p class="project-type">Deployment</p>
+                        <h3>Robustness evaluation and quantization</h3>
+                        <p>
+                            Transfer-learned RDNet-Tiny on CIFAR-10, applied INT8 quantization, and tested
+                            adversarial robustness across multiple attack families.
+                        </p>
+                        <ul class="project-points">
+                            <li>Tracked accuracy, model-size, and inference-speed trade-offs.</li>
+                            <li>Used Foolbox attacks to probe failure modes.</li>
+                            <li>Focused on efficient deployment, not just benchmark numbers.</li>
+                        </ul>
+                        <ul class="tag-list">
+                            <li>ONNX Runtime</li>
+                            <li>Foolbox</li>
+                            <li>Quantization</li>
+                            <li>CIFAR-10</li>
+                        </ul>
+                    </article>
+
+                    <article class="project-card">
+                        <p class="project-type">Industry</p>
+                        <h3>5G traffic prediction</h3>
+                        <p>
+                            Built forecasting pipelines for historical network traffic with SARIMA, XGBoost,
+                            LSTM, and Temporal Fusion Transformer experiments.
+                        </p>
+                        <ul class="project-points">
+                            <li>Prepared compressed, model-ready datasets.</li>
+                            <li>Compared classical and deep forecasting approaches.</li>
+                            <li>Kept the work focused on practical signal, not noise.</li>
+                        </ul>
+                        <ul class="tag-list">
+                            <li>SARIMA</li>
+                            <li>XGBoost</li>
+                            <li>LSTM</li>
+                            <li>TFT</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section split" id="approach">
+                <div class="section-heading">
+                    <p class="section-index">02</p>
+                    <div>
+                        <h2>How I like to build</h2>
+                        <p>
+                            The portfolio itself follows the same logic as the work I enjoy: a strong base,
+                            small reusable parts, and a result that still feels distinctive.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="approach-grid">
+                    <article class="principle-card">
+                        <p class="principle-kicker">Modular</p>
+                        <h3>Pieces that fit together.</h3>
+                        <p>
+                            I like systems that can be rearranged without breaking the rest of the build.
+                            Good interfaces make it easier to extend a project later.
+                        </p>
+                    </article>
+
+                    <article class="principle-card">
+                        <p class="principle-kicker">Measured</p>
+                        <h3>Numbers that survive reruns.</h3>
+                        <p>
+                            I care about experiments that are reproducible and comparable, not just
+                            one-off wins that disappear once the environment changes.
+                        </p>
+                    </article>
+
+                    <article class="principle-card">
+                        <p class="principle-kicker">Distinctive</p>
+                        <h3>A surface that feels like mine.</h3>
+                        <p>
+                            Blue-gray tones, Lego-like blocks, and sharp hierarchy help the site stand out
+                            while still matching the work it represents.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="stack">
+                <div class="section-heading">
+                    <p class="section-index">03</p>
+                    <div>
+                        <h2>Toolkit</h2>
+                        <p>
+                            The stack I reach for when the job needs both research depth and practical delivery.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="chip-cloud" aria-label="Technical stack">
+                    <span>Python</span>
+                    <span>C++</span>
+                    <span>JavaScript</span>
+                    <span>PyTorch</span>
+                    <span>Transformers</span>
+                    <span>SLURM</span>
+                    <span>Optuna</span>
+                    <span>NumPy</span>
+                    <span>Pandas</span>
+                    <span>Scikit-Learn</span>
+                    <span>Matplotlib</span>
+                    <span>Plotly</span>
+                    <span>Dash</span>
+                    <span>Flask</span>
+                    <span>Django</span>
+                    <span>ONNX Runtime</span>
+                    <span>Foolbox</span>
+                    <span>Quantization</span>
+                    <span>LoRA/PEFT</span>
+                    <span>Edge inference</span>
+                </div>
+            </section>
+
+            <section class="section contact" id="contact">
+                <div class="contact-card">
+                    <div class="contact-copy">
+                        <p class="section-index">04</p>
+                        <h2>Let’s build something durable.</h2>
+                        <p>
+                            If you want to talk about optimization, ML systems, or a sharper web presence,
+                            start with the links below.
+                        </p>
+                    </div>
+
+                    <div class="contact-links">
+                        <a class="contact-line" href="mailto:adityabhargava2001@gmail.com">
+                            <span>Email</span>
+                            <strong>adityabhargava2001@gmail.com</strong>
+                        </a>
+                        <a
+                            class="contact-line"
+                            href="https://aditya-200118.github.io/portfolio"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <span>Live site</span>
+                            <strong>aditya-200118.github.io/portfolio</strong>
+                        </a>
+                        <a
+                            class="contact-line"
+                            href="https://github.com/aditya-200118"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <span>GitHub</span>
+                            <strong>github.com/aditya-200118</strong>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Built as a blue-gray modular portfolio with a Lego-like sense of structure.</p>
+        </footer>
+    </div>
 </body>
 </html>
