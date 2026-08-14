@@ -1,0 +1,22 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description: string;
+}
+
+const { eyebrow, title, description } = Astro.props;
+const hasActions = Astro.slots.has('actions');
+---
+
+<section class="page-hero">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1>{title}</h1>
+  <p class="lede">{description}</p>
+  {hasActions && (
+    <div class="hero-actions">
+      <slot name="actions" />
+    </div>
+  )}
+</section>
+

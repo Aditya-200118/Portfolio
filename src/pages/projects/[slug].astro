@@ -1,0 +1,58 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDateRange } from '../../lib/format';
+import { buildPath } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <section class="page-hero">
+    <div class="detail-topline">
+      <p class="eyebrow">{project.data.category}</p>
+      <a href={buildPath('projects/')}>Back to projects</a>
+    </div>
+    <h1>{project.data.title}</h1>
+    <p class="lede">{project.data.summary}</p>
+  </section>
+
+  <section class="detail-layout">
+    <article class="detail-main prose">
+      <Content />
+    </article>
+
+    <aside class="detail-sidebar">
+      <dl class="meta-list">
+        <div>
+          <dt class="meta-label">Role</dt>
+          <dd class="meta-value">{project.data.role}</dd>
+        </div>
+        <div>
+          <dt class="meta-label">Dates</dt>
+          <dd class="meta-value">{formatDateRange(project.data.dateStart, project.data.dateEnd)}</dd>
+        </div>
+        <div>
+          <dt class="meta-label">Stack</dt>
+          <dd class="meta-value">
+            <ul class="tag-list">
+              {project.data.stack.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </aside>
+  </section>
+</BaseLayout>
+

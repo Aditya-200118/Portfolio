@@ -1,0 +1,15 @@
+---
+import { siteMeta } from '../data/site';
+---
+
+<footer class="site-footer">
+  <p>{siteMeta.title}</p>
+  <p>{siteMeta.location}</p>
+  <p>
+    <a href={`mailto:${siteMeta.email}`}>{siteMeta.email}</a>
+  </p>
+  <p>
+    <a href={siteMeta.github} target="_blank" rel="noreferrer">GitHub</a>
+  </p>
+</footer>
+

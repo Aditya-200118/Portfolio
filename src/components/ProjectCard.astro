@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDateRange } from '../lib/format';
+import { buildPath } from '../lib/urls';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  compact?: boolean;
+}
+
+const { project, compact = false } = Astro.props;
+---
+
+<article class:list={['project-card', { compact }]}>
+  <div class="project-meta-row">
+    <p class="project-category">{project.data.category}</p>
+    <p class="project-dates">{formatDateRange(project.data.dateStart, project.data.dateEnd)}</p>
+  </div>
+  <h2>
+    <a href={buildPath(`projects/${project.id}/`)}>{project.data.title}</a>
+  </h2>
+  <p class="project-summary">{project.data.summary}</p>
+  <p class="project-role">{project.data.role}</p>
+  <ul class="tag-list" aria-label={`${project.data.title} technology stack`}>
+    {project.data.stack.map((tag) => (
+      <li>{tag}</li>
+    ))}
+  </ul>
+</article>
+

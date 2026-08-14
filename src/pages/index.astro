@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { focusAreas, homeQuote, intro } from '../data/profile';
+import { siteMeta } from '../data/site';
+import { sortProjects } from '../lib/collections';
+import { buildPath } from '../lib/urls';
+
+const projects = sortProjects(await getCollection('projects'));
+const featuredProjects = projects.filter((project) => project.data.featured);
+---
+
+<BaseLayout>
+  <section class="home-grid">
+    <div>
+      <p class="eyebrow">{siteMeta.location}</p>
+      <h1 class="home-display">{siteMeta.title}</h1>
+      <p class="hero-copy">{intro}</p>
+      <div class="button-row">
+        <a class="button-link primary" href={buildPath('about/')}>About me</a>
+        <a class="button-link" href={buildPath('projects/')}>Selected projects</a>
+      </div>
+    </div>
+
+    <aside class="note-panel" aria-label="Current snapshot">
+      <h2>Current snapshot</h2>
+      <ul class="note-list">
+        <li>
+          <span class="note-label">Focus</span>
+          Zeroth-order optimization, reproducible experimentation, and practical model work.
+        </li>
+        <li>
+          <span class="note-label">Now</span>
+          M.S. Computer Science at the University of Georgia.
+        </li>
+        <li>
+          <span class="note-label">Previously</span>
+          Graduate research at UGA and software engineering internship work at Ericsson India.
+        </li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Focus</p>
+        <h2 class="section-title">What the work centers on</h2>
+      </div>
+    </div>
+    <div class="focus-grid">
+      {focusAreas.map((area) => (
+        <article class="surface-card">
+          <h3>{area.title}</h3>
+          <p>{area.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Selected work</p>
+        <h2 class="section-title">Projects with technical depth</h2>
+      </div>
+      <a href={buildPath('projects/')}>View all projects</a>
+    </div>
+    <div class="project-grid">
+      {featuredProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Elsewhere</p>
+        <h2 class="section-title">Writing and photography</h2>
+      </div>
+    </div>
+    <div class="split-grid">
+      <article class="surface-card">
+        <h3>Blog</h3>
+        <p>
+          Longer notes on experiments, systems decisions, research process, and whatever is worth writing
+          down carefully.
+        </p>
+        <div class="button-row">
+          <a class="button-link" href={buildPath('blog/')}>Open blog</a>
+        </div>
+      </article>
+      <article class="surface-card">
+        <h3>Photography</h3>
+        <p>
+          A dedicated archive for images and short visual notes, kept separate from the engineering work
+          instead of squeezed into one page.
+        </p>
+        <div class="button-row">
+          <a class="button-link" href={buildPath('photography/')}>Open photography</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section quote-block">
+    <p>{homeQuote}</p>
+  </section>
+</BaseLayout>

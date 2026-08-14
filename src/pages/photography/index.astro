@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageHero from '../../components/PageHero.astro';
+import { buildPath } from '../../lib/urls';
+
+const entries = await getCollection('photography', ({ data }) => !data.draft);
+---
+
+<BaseLayout title="Photography" description="Photography archive for Aditya Bhargava.">
+  <PageHero
+    eyebrow="Photography"
+    title="Visual work."
+    description="A separate place for images and visual notes, without forcing them into the engineering pages."
+  />
+
+  {
+    entries.length === 0 ? (
+      <EmptyState
+        title="Archive is empty"
+        body="Published photographs will appear here."
+      />
+    ) : (
+      <section class="timeline">
+        {entries.map((entry) => (
+          <article class="timeline-item">
+            <h2 class="detail-title">
+              <a href={buildPath(`photography/${entry.id}/`)}>{entry.data.title}</a>
+            </h2>
+            <p class="timeline-summary">{entry.data.description}</p>
+          </article>
+        ))}
+      </section>
+    )
+  }
+</BaseLayout>

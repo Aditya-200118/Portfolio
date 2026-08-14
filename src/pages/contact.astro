@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { contactLinks } from '../data/profile';
+---
+
+<BaseLayout title="Contact" description="Contact and profile links for Aditya Bhargava.">
+  <PageHero
+    eyebrow="Contact"
+    title="Direct links."
+    description="The essentials only: email, profile links, and the repository that powers this site."
+  />
+
+  <section class="contact-grid">
+    {contactLinks.map((item) => (
+      <article class="contact-card">
+        <p class="contact-label">{item.label}</p>
+        <p class="contact-value">
+          <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+            {item.value}
+          </a>
+        </p>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
+

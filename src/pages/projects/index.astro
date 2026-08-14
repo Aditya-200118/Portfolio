@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sortProjects } from '../../lib/collections';
+
+const projects = sortProjects(await getCollection('projects'));
+---
+
+<BaseLayout title="Projects" description="Selected projects by Aditya Bhargava across optimization, ML systems, and deployment work.">
+  <PageHero
+    eyebrow="Projects"
+    title="Selected projects."
+    description="A focused set of work across zeroth-order optimization, model robustness, and practical ML systems."
+  />
+
+  <section class="project-grid">
+    {projects.map((project) => (
+      <ProjectCard project={project} compact />
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageHero from '../../components/PageHero.astro';
+import { sortBlog } from '../../lib/collections';
+import { buildPath } from '../../lib/urls';
+
+const posts = sortBlog(await getCollection('blog', ({ data }) => !data.draft));
+---
+
+<BaseLayout title="Blog" description="Writing and notes by Aditya Bhargava.">
+  <PageHero
+    eyebrow="Blog"
+    title="Writing archive."
+    description="Notes on experiments, infrastructure decisions, and research work."
+  />
+
+  {
+    posts.length === 0 ? (
+      <EmptyState
+        title="Archive is empty"
+        body="Published notes will appear here."
+      />
+    ) : (
+      <section class="timeline">
+        {posts.map((post) => (
+          <article class="timeline-item">
+            <p class="eyebrow">{post.data.pubDate.toLocaleDateString('en-US')}</p>
+            <h2 class="detail-title">
+              <a href={buildPath(`blog/${post.id}/`)}>{post.data.title}</a>
+            </h2>
+            <p class="timeline-summary">{post.data.description}</p>
+          </article>
+        ))}
+      </section>
+    )
+  }
+</BaseLayout>

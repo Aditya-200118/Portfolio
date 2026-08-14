@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { certifications, education, experience, intro, skillGroups } from '../data/profile';
+---
+
+<BaseLayout title="About" description="Background, education, research, and working focus for Aditya Bhargava.">
+  <PageHero
+    eyebrow="About"
+    title="Research-minded systems work."
+    description={intro}
+  />
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Education</p>
+        <h2 class="section-title">Academic foundation</h2>
+      </div>
+    </div>
+    <div class="education-grid">
+      {education.map((item) => (
+        <article class="education-card">
+          <h3>{item.school}</h3>
+          <p class="education-meta">
+            {item.degree} · {item.location} · {item.dates}
+          </p>
+          <p>{item.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Experience</p>
+        <h2 class="section-title">Research and professional timeline</h2>
+      </div>
+    </div>
+    <div class="timeline">
+      {experience.map((item) => (
+        <article class="timeline-item">
+          <div class="detail-topline">
+            <div>
+              <h3>{item.title}</h3>
+              <p class="timeline-org">
+                {item.org} · {item.location}
+              </p>
+            </div>
+            <p class="timeline-meta">{item.dates}</p>
+          </div>
+          <p class="timeline-summary">{item.summary}</p>
+          <ul class="timeline-points">
+            {item.points.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Skills</p>
+        <h2 class="section-title">Tools and domains</h2>
+      </div>
+    </div>
+    <div class="skill-stack">
+      {skillGroups.map((group) => (
+        <article class="skill-row">
+          <h3>{group.label}</h3>
+          <p>{group.items.join(' · ')}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Certifications</p>
+        <h2 class="section-title">Additional credentials</h2>
+      </div>
+    </div>
+    <ul class="cert-list">
+      {certifications.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
