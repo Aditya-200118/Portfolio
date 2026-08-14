@@ -16,12 +16,13 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f5f6f7" />
+    <meta name="color-scheme" content="light dark" />
     <title>{pageTitle}</title>
     {canonical && <link rel="canonical" href={canonical.href} />}
     <link rel="icon" type="image/svg+xml" href={buildPath('favicon.svg')} />
@@ -31,6 +32,44 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      (() => {
+        const key = 'portfolio-theme';
+        const root = document.documentElement;
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        const themeColor = {
+          light: '#f4f3f8',
+          dark: '#090b12',
+        };
+
+        const getPreferredTheme = () => {
+          const stored = localStorage.getItem(key);
+          if (stored === 'light' || stored === 'dark') {
+            return stored;
+          }
+
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        const applyTheme = (theme) => {
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+          metaTheme?.setAttribute('content', themeColor[theme] || themeColor.light);
+        };
+
+        const initialTheme = getPreferredTheme();
+        applyTheme(initialTheme);
+
+        window.__portfolioTheme = {
+          get: () => root.dataset.theme || getPreferredTheme(),
+          set: (theme) => {
+            applyTheme(theme);
+            localStorage.setItem(key, theme);
+            window.dispatchEvent(new CustomEvent('portfolio-theme-change', { detail: { theme } }));
+          },
+        };
+      })();
+    </script>
     <slot name="head" />
   </head>
   <body>
@@ -42,6 +81,41 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
       </main>
       <SiteFooter />
     </div>
+    <script is:inline>
+      (() => {
+        const syncThemeControls = () => {
+          const currentTheme = window.__portfolioTheme?.get?.() || 'light';
+          const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+          document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+            button.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+          });
+
+          document.querySelectorAll('[data-theme-label]').forEach((label) => {
+            label.textContent = nextTheme === 'dark' ? 'Dark mode' : 'Light mode';
+          });
+        };
+
+        const bindThemeControls = () => {
+          document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+            if (button.dataset.boundThemeToggle === 'true') {
+              return;
+            }
+
+            button.dataset.boundThemeToggle = 'true';
+            button.addEventListener('click', () => {
+              const currentTheme = window.__portfolioTheme?.get?.() || 'light';
+              const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+              window.__portfolioTheme?.set?.(nextTheme);
+              syncThemeControls();
+            });
+          });
+        };
+
+        bindThemeControls();
+        syncThemeControls();
+        window.addEventListener('portfolio-theme-change', syncThemeControls);
+      })();
+    </script>
   </body>
 </html>
-
