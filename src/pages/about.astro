@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import TimelineCarousel from '../components/TimelineCarousel.astro';
 import { certifications, education, experience, intro, skillGroups } from '../data/profile';
 ---
 
@@ -38,27 +39,7 @@ import { certifications, education, experience, intro, skillGroups } from '../da
         <h2 class="section-title">Research and professional timeline</h2>
       </div>
     </div>
-    <div class="timeline">
-      {experience.map((item) => (
-        <article class="timeline-item">
-          <div class="detail-topline">
-            <div>
-              <h3>{item.title}</h3>
-              <p class="timeline-org">
-                {item.org} · {item.location}
-              </p>
-            </div>
-            <p class="timeline-meta">{item.dates}</p>
-          </div>
-          <p class="timeline-summary">{item.summary}</p>
-          <ul class="timeline-points">
-            {item.points.map((point) => (
-              <li>{point}</li>
-            ))}
-          </ul>
-        </article>
-      ))}
-    </div>
+    <TimelineCarousel items={experience} />
   </section>
 
   <section class="section">
@@ -92,4 +73,3 @@ import { certifications, education, experience, intro, skillGroups } from '../da
     </ul>
   </section>
 </BaseLayout>
-

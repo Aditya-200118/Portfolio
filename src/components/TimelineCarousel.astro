@@ -1,0 +1,242 @@
+---
+interface TimelineEntry {
+  title: string;
+  org: string;
+  location: string;
+  dates: string;
+  summary: string;
+  points: string[];
+}
+
+interface Props {
+  items: TimelineEntry[];
+  id?: string;
+  label?: string;
+}
+
+const { items, id = 'experience-carousel', label = 'Research and professional timeline' } = Astro.props;
+const stageId = `${id}-stage`;
+---
+
+<div class="timeline-carousel" data-carousel id={id} aria-label={label}>
+  <div class="timeline-carousel__toolbar">
+    <p class="timeline-carousel__count">
+      <span data-carousel-current>01</span>
+      <span class="timeline-carousel__count-separator">/</span>
+      <span>{String(items.length).padStart(2, '0')}</span>
+    </p>
+    <div class="timeline-carousel__controls" aria-label="Carousel controls">
+      <button class="timeline-carousel__button" type="button" data-carousel-prev aria-controls={stageId}>
+        Prev
+      </button>
+      <button class="timeline-carousel__button" type="button" data-carousel-next aria-controls={stageId}>
+        Next
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-carousel__stage" id={stageId} data-carousel-stage tabindex="0" aria-describedby={`${id}-hint`}>
+    <div class="timeline-carousel__track" data-carousel-track>
+      {items.map((item, index) => (
+        <article
+          class="timeline-carousel__slide timeline-item"
+          data-carousel-slide
+          data-slide-index={index}
+          aria-label={`${item.title}, item ${index + 1} of ${items.length}`}
+        >
+          <div class="detail-topline">
+            <div>
+              <h3>{item.title}</h3>
+              <p class="timeline-org">
+                {item.org} · {item.location}
+              </p>
+            </div>
+            <p class="timeline-meta">{item.dates}</p>
+          </div>
+          <p class="timeline-summary">{item.summary}</p>
+          <ul class="timeline-points">
+            {item.points.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <div class="timeline-carousel__footer">
+    <p class="timeline-carousel__hint sr-only" id={`${id}-hint`}>
+      Use the previous and next buttons, arrow keys, or horizontal swipe to browse timeline items.
+    </p>
+    <div class="timeline-carousel__dots" aria-label="Timeline positions">
+      {items.map((item, index) => (
+        <button
+          class="timeline-carousel__dot"
+          type="button"
+          data-carousel-dot
+          data-slide={index}
+          aria-label={`Show ${item.title}`}
+        ></button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const bindCarousel = (root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.carouselBound === 'true') {
+        return;
+      }
+
+      const stage = root.querySelector('[data-carousel-stage]');
+      const slides = Array.from(root.querySelectorAll('[data-carousel-slide]'));
+      const dots = Array.from(root.querySelectorAll('[data-carousel-dot]'));
+      const prevButton = root.querySelector('[data-carousel-prev]');
+      const nextButton = root.querySelector('[data-carousel-next]');
+      const currentLabel = root.querySelector('[data-carousel-current]');
+
+      if (!(stage instanceof HTMLElement) || slides.length === 0) {
+        return;
+      }
+
+      root.dataset.carouselBound = 'true';
+
+      let currentIndex = 0;
+      let animationTimer = 0;
+      let pointerStartX = 0;
+      let pointerDeltaX = 0;
+      let pointerActive = false;
+
+      const setState = (index, direction = 0) => {
+        currentIndex = index;
+        root.dataset.edge = index === 0 ? 'start' : index === slides.length - 1 ? 'end' : 'middle';
+        root.dataset.direction = direction > 0 ? 'next' : direction < 0 ? 'prev' : 'idle';
+        root.classList.add('is-animating');
+        window.clearTimeout(animationTimer);
+        animationTimer = window.setTimeout(() => {
+          root.classList.remove('is-animating');
+        }, prefersReducedMotion ? 0 : 540);
+
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('is-active', slideIndex === index);
+          slide.classList.toggle('is-prev', slideIndex === index - 1);
+          slide.classList.toggle('is-next', slideIndex === index + 1);
+          slide.classList.toggle('is-before-prev', slideIndex < index - 1);
+          slide.classList.toggle('is-after-next', slideIndex > index + 1);
+          slide.setAttribute('aria-hidden', slideIndex === index ? 'false' : 'true');
+        });
+
+        dots.forEach((dot, dotIndex) => {
+          const active = dotIndex === index;
+          dot.classList.toggle('is-active', active);
+          dot.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        if (currentLabel instanceof HTMLElement) {
+          currentLabel.textContent = String(index + 1).padStart(2, '0');
+        }
+
+        if (prevButton instanceof HTMLButtonElement) {
+          prevButton.disabled = index === 0;
+        }
+
+        if (nextButton instanceof HTMLButtonElement) {
+          nextButton.disabled = index === slides.length - 1;
+        }
+      };
+
+      const goToIndex = (index) => {
+        const boundedIndex = Math.max(0, Math.min(index, slides.length - 1));
+        if (boundedIndex === currentIndex) {
+          return;
+        }
+
+        setState(boundedIndex, boundedIndex > currentIndex ? 1 : -1);
+      };
+
+      prevButton?.addEventListener('click', () => {
+        goToIndex(currentIndex - 1);
+      });
+
+      nextButton?.addEventListener('click', () => {
+        goToIndex(currentIndex + 1);
+      });
+
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const index = Number(dot.getAttribute('data-slide') || 0);
+          goToIndex(index);
+        });
+      });
+
+      stage.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          goToIndex(currentIndex + 1);
+        }
+
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goToIndex(currentIndex - 1);
+        }
+
+        if (event.key === 'Home') {
+          event.preventDefault();
+          goToIndex(0);
+        }
+
+        if (event.key === 'End') {
+          event.preventDefault();
+          goToIndex(slides.length - 1);
+        }
+      });
+
+      stage.addEventListener('pointerdown', (event) => {
+        pointerActive = true;
+        pointerStartX = event.clientX;
+        pointerDeltaX = 0;
+      });
+
+      stage.addEventListener('pointermove', (event) => {
+        if (!pointerActive) {
+          return;
+        }
+
+        pointerDeltaX = event.clientX - pointerStartX;
+      });
+
+      const finishSwipe = () => {
+        if (!pointerActive) {
+          return;
+        }
+
+        pointerActive = false;
+        if (Math.abs(pointerDeltaX) < 42) {
+          pointerDeltaX = 0;
+          return;
+        }
+
+        if (pointerDeltaX < 0) {
+          goToIndex(currentIndex + 1);
+        } else {
+          goToIndex(currentIndex - 1);
+        }
+
+        pointerDeltaX = 0;
+      };
+
+      stage.addEventListener('pointerup', finishSwipe);
+      stage.addEventListener('pointercancel', finishSwipe);
+      stage.addEventListener('pointerleave', finishSwipe);
+
+      requestAnimationFrame(() => {
+        setState(0, 0);
+      });
+    };
+
+    document.querySelectorAll('[data-carousel]').forEach(bindCarousel);
+  })();
+</script>
